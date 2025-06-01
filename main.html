@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XAUUSD Lot Size Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f8f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+    }
+    .calculator {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+    .calculator h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .input-group {
+      margin-bottom: 15px;
+    }
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #2d2d2d;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <h2>XAUUSD Lot Size Calculator</h2>
+    <div class="input-group">
+      <label for="balance">Account Balance ($)</label>
+      <input type="number" id="balance" />
+    </div>
+    <div class="input-group">
+      <label for="risk">Risk Percentage (%)</label>
+      <input type="number" id="risk" />
+    </div>
+    <div class="input-group">
+      <label for="stoploss">Stop Loss (pips)</label>
+      <input type="number" id="stoploss" />
+    </div>
+    <button onclick="calculateLotSize()">Calculate Lot Size</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function calculateLotSize() {
+      const balance = parseFloat(document.getElementById('balance').value);
+      const riskPercent = parseFloat(document.getElementById('risk').value);
+      const stopLoss = parseFloat(document.getElementById('stoploss').value);
+
+      if (isNaN(balance) || isNaN(riskPercent) || isNaN(stopLoss) || stopLoss <= 0) {
+        document.getElementById('result').textContent = 'Please enter valid inputs.';
+        return;
+      }
+
+      const riskAmount = (riskPercent / 100) * balance;
+      const pipValuePer0_01Lot = 0.10; // For XAUUSD
+
+      const lotSize = (riskAmount / (stopLoss * pipValuePer0_01Lot));
+
+      document.getElementById('result').textContent = `Recommended Lot Size: ${lotSize.toFixed(2)} lots`;
+    }
+  </script>
+</body>
+</html>
